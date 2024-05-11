@@ -1,0 +1,180 @@
+@startuml
+class Main {
+- {static} boolean LOG
++ {static} void main(String[])
+}
+
+
+class Passenger {
+- int id
+- int from
+- int to
+- PersonRequest myself
++ int getFrom()
++ int getTo()
++ int getId()
++ PersonRequest getMyself()
+}
+
+
+class Strategy {
+- RequestList request
+- HashMap<Integer,Passenger> passengers
+- ArrayList<Request> waitingList
++ Suggestion getSuggestion(int,int,int)
+- boolean hasSameDirection(int,int)
+- boolean canOpenForOut(int)
+- boolean canOpenForIn(int,int,int)
+- boolean havaReset()
+}
+
+
+class Parameter {
+- int initial
+- int capacity
+- int open
+- int close
+- int move
+- int highestFloor
+- int elevatorNumber
++ int getCapacity()
++ int getInitial()
++ int getElevatornumber()
++ int getClose()
++ int getMove()
++ int getOpen()
++ int getHighestfloor()
++ void setMove(int)
++ void setCapacity(int)
+}
+
+
+class RequestList {
+- HashMap<Integer,ArrayList<Passenger>> requestPeople
+- ArrayList<ResetRequest> requestReset
+- ArrayList<Request> requestTable
+- boolean isEnd
+- int id
+- {static} boolean LOG
++ void waitRequest()
++ void addRequest(Request)
++ void removeRequest(Request)
++ boolean isEmpty()
++ void setEnd()
++ boolean isEnd()
++ ArrayList<Request> getRequestTable()
++ int getSize()
++ ArrayList<ResetRequest> getRequestReset()
++ HashMap<Integer,ArrayList<Passenger>> getRequestPeople()
++ void removePersonRequest(Passenger)
++ void removeResetRequest(ResetRequest)
++ void clearRequest()
+}
+
+
+class InputHandler {
+- Dispatch dispatch
+- {static} boolean LOG
+- ArrayList<Request> waitingList
++ void run()
+}
+
+
+class TestMain {
++ {static} void main(String[])
+}
+
+class TestMain$Pair {
+- K first
+- V second
++ K getFirst()
++ V getSecond()
++ boolean equals(Object)
++ int hashCode()
++ String toString()
+}
+
+
+class TestMain$TimeInputStream {
+- {static} Pattern pattern
+- Queue<Pair<Long,String>> data
+- Queue<Integer> cache
++ int read()
++ int read(byte[],int,int)
+}
+
+
+class Dispatch {
+- HashMap<Integer,RequestList> requests
+- HashMap<Integer,Elevator> elevators
+- ArrayList<Request> waitingList
+- boolean end
+- int resetNumber
+- int finishedReset
++ void run()
+- void dispatchPeople(PersonRequest)
+- void dispatchReset(ResetRequest)
+- ArrayList<Elevator> findWait()
+- ArrayList<Elevator> findSame(PersonRequest)
+- Elevator findNearest(ArrayList<Elevator>,ArrayList<Elevator>,PersonRequest)
+- boolean isSameDirectiorn(Elevator,PersonRequest)
+- Elevator findFewest()
+- Elevator findQuick(ArrayList<Elevator>)
++ void setEnd()
++ void addFinish()
+}
+
+
+class Elevator {
+- HashMap<Integer,Passenger> passengers
+- ArrayList<Request> waitingList
+- RequestList myRequest
+- Strategy strategy
+- int id
+- int nowFloor
+- int direction
+- Parameter parameter
+- boolean isWait
+- boolean isReset
+- Dispatch dispatch
++ void run()
+- void move()
+- void openAndClose()
+- void letout()
+- void letin()
+- boolean canIn(Passenger)
++ int getPeopleNumber()
++ int getCapacity()
++ RequestList getMyRequestList()
++ int getDirection()
++ int getNowFloor()
++ int getRequestNumber()
+- void elevatorReset()
+- void elevatorWait()
+- void allOut()
++ int getMove()
++ boolean isWait()
++ boolean isReset()
++ int getElevatorId()
++ void setReset()
+}
+
+
+enum Suggestion {
++  END
++  OPEN
++  REVERSE
++  WAIT
++  MOVE
++  RESET
+}
+
+
+
+Thread <|-- InputHandler
+TestMain +.. TestMain$Pair
+TestMain +.. TestMain$TimeInputStream
+InputStream <|-- TestMain$TimeInputStream
+Thread <|-- Dispatch
+Thread <|-- Elevator
+@enduml

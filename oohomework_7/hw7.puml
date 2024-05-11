@@ -1,0 +1,238 @@
+@startuml
+class Elevator {
+- int id
+- HashMap<Integer,Passenger> passengers
+- RequestList myRequest
+- Parameter parameter
+- int nowFloor
+- int direction
+- boolean isWait
+- int changeFloor
+- String type
+- boolean isDouble
+- Dispatch dispatch
+- Strategy strategy
+- ArrayList<Request> waitingList
+- Lock lock
+- HashSet<Integer> solvedPassengers
++ void run()
+- void move()
+- void openAndClose()
+- void letout()
+- void letin()
+- boolean canIn(Passenger)
+- void elevatorWait()
+- void elevatorDoubleReset()
+- void elevatorNormalReset()
+- void allOut()
++ int getNowFloor()
++ int getDirection()
++ boolean isWait()
++ int getPeopleNumber()
++ int getCapacity()
++ int getMove()
++ int getRequestNumber()
++ RequestList getMyRequest()
+- boolean shouldLock()
++ boolean isInBound(PersonRequest)
+- void passengersAddWaiting()
+- void requestsAddWaiting()
++ int getEleId()
++ void setDouble(int,String)
+- void printArrive()
+- void printOpen()
+- void printClose()
+- void printResetBegin()
+- void printResetEnd()
+- void printIn(int)
+- void printOut(int)
++ void setNowFloor(int)
++ boolean isDouble()
++ Parameter getParameter()
+- boolean letinAtChangeFloor(boolean)
+- boolean firstOutAtChangeFloor()
+- void secondOutAtChangeFloor(boolean)
++ int getSolvedSize()
+- void sleepOpen()
+- void sleepClose()
+- void sleepMove()
+- void sleepReset()
++ int getChangeFloor()
+- void twoAddWaiting()
+- void open()
+- void close()
+- void notifyWaitingList()
+- void addAndNotifyWaitingList(PersonRequest)
+}
+
+
+class Parameter {
+- int move
+- int open
+- int close
+- int capacity
++ int getMove()
++ int getOpen()
++ int getClose()
++ int getCapacity()
++ void setMove(int)
++ void setCapacity(int)
+}
+
+
+class Strategy {
+- RequestList request
+- HashMap<Integer,Passenger> passengers
++ Suggestion getSuggestion(int,int,int,int,String)
+- boolean hasSameDirection(int,int,int,String)
+- boolean canOpenForOut(int)
+- boolean canOpenForIn(int,int,int)
+}
+
+
+class Dispatch {
+- ArrayList<Request> waitingList
+- HashMap<Integer,Elevator> elevators
+- boolean end
+- HashSet<Integer> allPassengers
+- int resetNum
+- int finishNum
++ void run()
++ void setEnd()
+- void dispatchPeopleRequest(PersonRequest)
+- void dispatchResetRequest(ResetRequest)
+- ArrayList<Elevator> findWait(PersonRequest)
+- ArrayList<Elevator> findSame(PersonRequest)
+- Elevator findNearest(ArrayList<Elevator>,ArrayList<Elevator>,PersonRequest)
+- boolean isSameDirectiorn(Elevator,PersonRequest)
+- Elevator findFewest(PersonRequest)
+- Elevator findQuick(ArrayList<Elevator>)
++ void replaceElevator(DoubleElevator)
+- boolean allSolved()
+- boolean canArrive(Elevator,PersonRequest,String)
+- void dispatchRequest(Request)
+- void waitWaitingList()
++ void addFinishReset()
+}
+
+
+class TestMain {
++ {static} void main(String[])
+}
+
+class TestMain$Pair {
+- K first
+- V second
++ K getFirst()
++ V getSecond()
++ boolean equals(Object)
++ int hashCode()
++ String toString()
+}
+
+
+class TestMain$TimeInputStream {
+- {static} Pattern pattern
+- Queue<Pair<Long,String>> data
+- Queue<Integer> cache
++ int read()
++ int read(byte[],int,int)
+}
+
+
+enum Suggestion {
++  WAIT
++  NORMALRESET
++  MOVE
++  OPEN
++  CLOSE
++  DOUBLERESET
++  REVERSE
++  END
+}
+
+class InputHandler {
+- ArrayList<Request> waitingList
+- Dispatch dispatch
++ void run()
+}
+
+
+class Passenger {
+- int id
+- int toFloor
+- int fromFloor
+- PersonRequest myself
++ int getId()
++ int getToFloor()
++ int getFromFloor()
++ PersonRequest getMyself()
+}
+
+
+class DoubleElevator {
+- Elevator elevatorA
+- Elevator elevatorB
+- int changeFloor
+- Lock lock
+- int id
+- int hasSolved
++ Elevator getElevatorA()
++ Elevator getElevatorB()
++ int getChangeFloor()
++ void setMove(int)
++ void setCapacity(int)
++ void setEnd()
++ int getSolvedSize()
++ void setParameter(int,int)
+}
+
+
+class Main {
++ {static} void main(String[])
+}
+
+class RequestList {
+- ArrayList<Request> requestTable
+- HashMap<Integer,ArrayList<Passenger>> requestPeople
+- ArrayList<NormalResetRequest> requestNormalReset
+- ArrayList<DoubleCarResetRequest> requestDoubleReset
+- boolean end
+- ArrayList<Passenger> buffer
+- boolean eleIsReset
+- String type
+- int eleId
++ void waitRequest()
++ void setEnd()
++ void addPersonRequest(PersonRequest)
++ void addNormalResetRequest(NormalResetRequest)
++ void addDoubleCarResetRequest(DoubleCarResetRequest)
++ int getRequestNumber()
++ void setType(String)
++ void setEleIsReset(boolean)
++ boolean isEnd()
++ boolean haveNormalReset()
++ boolean haveDoubleReset()
++ HashMap<Integer,ArrayList<Passenger>> getRequestPeople()
++ ArrayList<DoubleCarResetRequest> getRequestDoubleReset()
++ ArrayList<NormalResetRequest> getRequestNormalReset()
++ boolean isEmpty()
++ void removePersonRequest(Passenger)
++ void clearRequest()
++ void removeNormalReset(NormalResetRequest)
++ void removeDoubleReset(DoubleCarResetRequest)
++ void bufferIn()
++ void bufferInTwo(DoubleElevator)
+}
+
+
+
+
+Thread <|-- Elevator
+Thread <|-- Dispatch
+TestMain +.. TestMain$Pair
+TestMain +.. TestMain$TimeInputStream
+InputStream <|-- TestMain$TimeInputStream
+Thread <|-- InputHandler
+Elevator <|-- DoubleElevator
+@enduml

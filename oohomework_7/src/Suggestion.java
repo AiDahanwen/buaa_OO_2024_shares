@@ -1,0 +1,3 @@
+public enum Suggestion {
+    WAIT, NORMALRESET, MOVE, OPEN, CLOSE, DOUBLERESET, REVERSE, END
+}

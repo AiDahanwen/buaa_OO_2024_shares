@@ -1,0 +1,122 @@
+@startuml
+class Elevator {
+- HashMap<Integer,Passenger> passengers
+- Request myRequest
+- Strategy strategy
+- int id
+- int nowFloor
+- int direction
+- int initial
+- int capacity
+- int open
+- int close
+- int move
+- int highestfloor
+- {static} boolean LOG
++ void run()
+- void move()
+- void openAndClose()
+- void letout()
+- void letin()
+- boolean canIn(Passenger)
+}
+
+
+class Passenger {
+- int id
+- int from
+- int to
+- int eleId
++ int getFrom()
++ int getTo()
++ int getEleId()
++ int getId()
+}
+
+
+class Main {
+- {static} boolean LOG
++ {static} void main(String[])
+}
+
+
+class InputHandler {
+- HashMap<Integer,Request> requests
+- HashMap<Integer,Elevator> elevators
+- {static} boolean LOG
+- {static} int INITIAL
+- {static} int CAPACITY
+- {static} int OPEN
+- {static} int CLOSE
+- {static} int MOVE
+- {static} int HIGHESTFLOOR
+- {static} int ELEVATORNUMBER
++ void run()
+}
+
+
+enum Suggestion {
++  END
++  OPEN
++  REVERSE
++  WAIT
++  MOVE
+}
+
+class TestMain {
++ {static} void main(String[])
+}
+
+class TestMain$Pair {
+- K first
+- V second
++ K getFirst()
++ V getSecond()
++ boolean equals(Object)
++ int hashCode()
++ String toString()
+}
+
+
+class TestMain$TimeInputStream {
+- {static} Pattern pattern
+- Queue<Pair<Long,String>> data
+- Queue<Integer> cache
++ int read()
++ int read(byte[],int,int)
+}
+
+
+class Request {
+- HashMap<Integer,HashMap<Integer,Passenger>> requestTable
+- boolean isEnd
+- int highest
+- {static} boolean LOG
++ void waitRequest()
++ void addRequest(Passenger)
++ void removeRequest(Passenger)
++ boolean isEmpty()
++ void setEnd()
++ boolean isEnd()
++ HashMap<Integer,HashMap<Integer,Passenger>> getRequestTable()
+}
+
+
+class Strategy {
+- Request request
+- HashMap<Integer,Passenger> passengers
++ Suggestion getSuggestion(int,int)
+- boolean hasSameDirection(int,int)
+- boolean canOpenForOut(int,int)
+- boolean canOpenForIn(int,int)
+}
+
+
+
+
+Thread <|-- Elevator
+Thread <|-- InputHandler
+TestMain +.. TestMain$Pair
+TestMain +.. TestMain$TimeInputStream
+InputStream <|-- TestMain$TimeInputStream
+@enduml
